@@ -1,0 +1,120 @@
+<form>
+  <form [formGroup]="productForm" (ngSubmit)="saveall()">
+    <div class="button-row">
+      <button class="btn btn-primary" type="submit">Save</button>
+      <button class="btn btn-primary" type="button" (click)="deleteall()">
+        Delete
+      </button>
+      <button class="btn btn-primary" type="button" (click)="clearForm()">
+        Cancel
+      </button>
+      <button class="btn btn-primary"  type="button"  [routerLink]="['']">List</button>
+    </div>
+
+    <div class="lable-row">
+      <label>Product Name:</label>
+      <input formControlName="productype" type="text" />
+
+      <label>SKU:</label>
+      <input formControlName="sku" type="text" />
+    </div>
+
+    <div class="lable-row">
+      <label>Colors:</label>
+      <mat-select formControlName="colors" multiple>
+        <mat-option *ngFor="let color of colorOptions" [value]="color">{{
+          color
+        }}</mat-option>
+      </mat-select>
+
+      <label>Sizes:</label>
+      <mat-select formControlName="size" multiple>
+        <mat-option *ngFor="let size of sizeOptions" [value]="size">{{
+          size
+        }}</mat-option>
+      </mat-select>
+    </div>
+
+    <label>Description:</label>
+    <textarea formControlName="description"></textarea>
+  </form>
+
+  <button type="button" (click)="onGenerate()">Generate</button>
+
+  <table class="table table-bordered" *ngIf="generatedVariants.length">
+    <thead>
+      <tr>
+        <th>NO</th>
+        <th>Product Name</th>
+        <th>Image</th>
+        <th>SKU</th>
+        <th>Qty</th>
+        <th>Price</th>
+        <th>Color</th>
+        <th>Size</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of generatedVariants; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>
+          <input
+            type="text"
+            [value]="product.product_name"
+            (change)="onChangeProductname($event, i)"
+          />
+        </td>
+        <td>
+          <img
+            [src]="
+              product.imgurl || product.previewimage || 'assets/images/placeholder.jpg'
+            "
+            alt="{{ product.product_name }}"
+            width="50"
+            height="50"
+            class="img-thumbnail"
+          /><input type="file" (change)="onFileSelect($event, i)" />
+        </td>
+        <td>
+          <input
+            type="text"
+            [value]="product.sku"
+            (change)="onChangeSKU($event, i)"
+          />
+        </td>
+        <td>
+          <input
+            type="number"
+            [value]="product.quantity"
+            (change)="onChangeQuantity($event, i)"
+          />
+        </td>
+        <td>
+          <input
+            type="number"
+            [value]="product.price"
+            (change)="onChangePrice($event, i)"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [value]="product.color"
+            (change)="onChangeColor($event, i)"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [value]="product.size"
+            (change)="onChangeSize($event, i)"
+          />
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="deleteprouct(i)">🗑️</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>
