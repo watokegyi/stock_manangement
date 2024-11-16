@@ -68,12 +68,27 @@ export class ProductService {
       .subscribe((blob) => saveAs(blob, 'productData.xlsx'));
   }
 
+  
+
   importProductData(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
 
     return this.http
       .post(`${environment.apiUrl}/productdata/import`, formData)
-      }
-
+      .pipe(
+        map((response: any) => {
+         
+          console.log('Response from server:', response);
+          return response;
+        }),
+        catchError((error: any) => {
+          
+          console.error('Error during import:', error);
+          return throwError(
+            () => new Error(error.message || 'Error importing product data.')
+          );
+        })
+      );
+  }
 }

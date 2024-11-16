@@ -136,20 +136,17 @@
     onFileSelected(event: any) {
       const file = event.target.files[0];
 
-      // Check if a file is selected
+      
       if (file) {
-        // Show a loading indicator or disable the button if needed
-        // Disable the upload button or show loading state here if required
-
-        // Call the import service
+        
         this.services.importProductData(file).subscribe(
           (response) => {
             alert('Data imported successfully');
 
-            // Optionally, handle the response here (e.g., reset form, refresh data)
+            
           },
           (error) => {
-            // Improved error handling
+           
             if (error.status === 400) {
               alert('Product data sheet not found in the Excel file.');
             } else if (error.status === 500) {
